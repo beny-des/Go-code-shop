@@ -1,10 +1,12 @@
 // import logo from './logo.svg';
+import { useState } from "react";
 import "./App.css";
 import Header from "./components/header/Header";
 import Products from "./components/products/Products";
+import TuggleButton from "./components/classWork/TuggleButton";
 
 function App() {
-  const ProductsArray = [
+  const data = [
     {
       id: 1,
       title: "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
@@ -272,10 +274,27 @@ function App() {
       },
     },
   ];
+  const [productsArray, setProductsArray] = useState(data);
+
+  // -------פונקציית חיפוש לקטגורייה
+
+  const categories = data
+    .map((p) => p.category)
+    .filter((value, index, array) => array.indexOf(value) === index);
+
+  function newpRoductList(filteredList) {
+    const fillterProd = data.filter((productObj) =>
+      filteredList === "All" ? data : productObj.category === filteredList
+    );
+
+    setProductsArray(fillterProd);
+  }
+
   return (
     <div className="App">
-      <Header />
-      <Products products={ProductsArray} />
+      <TuggleButton />
+      <Header filterCategories={categories} newpRoductList={newpRoductList} />
+      <Products products={productsArray} />
     </div>
   );
 }

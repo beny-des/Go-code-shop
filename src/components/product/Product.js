@@ -1,11 +1,11 @@
 import "./Product.css"
-const Product = ({ image, title, price })=>
+const Product = ({ image, title, price,id })=>
 {return(
   <div className="product-card">
       <div className="product-image">
         <img src={image} alt='pic' />
       </div>
-      {console.log(image)}
+      
       <div className="product-info">
         <h5>{title}</h5>
         <h6>{price}</h6>
