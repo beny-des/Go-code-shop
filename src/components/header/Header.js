@@ -1,6 +1,6 @@
-import Product from "../product/Product";
 import "./Header.css";
-const Header = ({ filterCategories, newpRoductList }) => (
+
+const Header = ({ filterCategories, newpProductList }) => (
   <nav className="product-filter">
     <h1>Jackets</h1>
 
@@ -11,10 +11,10 @@ const Header = ({ filterCategories, newpRoductList }) => (
         <select
           onChange={(e) => {
             let filteredList = e.target.value;
-            newpRoductList(filteredList);
+            newpProductList(filteredList);
           }}
         >
-          <option value="All">All product</option>
+          <option value="All">All products</option>
           {filterCategories.map((category) => {
             return (
               <option key={category} value={category}>
