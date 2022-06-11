@@ -3,32 +3,36 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import Header from "./components/header/Header";
 import Products from "./components/products/Products";
+import LoadingSpinner from "./components/utils/LoadingSpinner";
 import TuggleButton from "./components/classWork/TuggleButton";
 
-
 function App() {
+
   const [productsArray, setProductsArray] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [categories, setCategories] = useState([]);
-  
+  const [loadingSpinner, setLoadingSpinner] = useState(false);
+
+
   useEffect(() => {
+    setLoadingSpinner(true);
     fetch("https://fakestoreapi.com/products")
-    .then((result) => result.json())
-    .then((data) => {
-      setProductsArray(data);
-      setFilteredProducts(data);
-      setCategories(uniqValues(data));
-    });
+      .then((result) => result.json())
+      .then((data) => {
+        setProductsArray(data);
+        setFilteredProducts(data);
+        setCategories(uniqValues(data));
+        setLoadingSpinner(false);
+      });
   }, []);
-  
-  
-  // -------search the array for category and giving as one of each for the dropdown filter
-    function uniqValues(array) {
-      return array
+
+
+    // -------search the array for category and giving as one of each for the dropdown filter
+  function uniqValues(array) {
+    return array
       .map((p) => p.category)
       .filter((value, index, array) => array.indexOf(value) === index);
-    }
-    
+  }
 
 
 
@@ -47,7 +51,8 @@ function App() {
     <div className="App">
       {/* <TuggleButton /> */}
       <Header filterCategories={categories} newpProductList={newpProductList} />
-      <Products products={filteredProducts} />
+
+      {loadingSpinner ? <LoadingSpinner /> : <Products products={filteredProducts} />}
     </div>
   );
 }
