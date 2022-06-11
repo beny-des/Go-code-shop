@@ -27,7 +27,7 @@ function App() {
   }, []);
 
 
-    // -------search the array for category and giving as one of each for the dropdown filter
+    // -------search the array for category and giving us one of each for the dropdown filter
   function uniqValues(array) {
     return array
       .map((p) => p.category)
