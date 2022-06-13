@@ -7,6 +7,7 @@ const Products = ({ products }) => {
         return (
           <Product
             key={product.id}
+            id={product.id}
             image={product.image}
             title={product.title}
             price={product.price}

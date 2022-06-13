@@ -1,8 +1,16 @@
 import "./Header.css";
+// import CartContext from "../../context/CartContext";
+// import { useContext } from "react";
 
-const Header = ({ filterCategories, newpProductList }) => (
+const Header = ({ filterCategories, newpProductList, fetchAgian }) => {
+  // const categories = useContext(CartContext)
+  
+  
+  return (
   <nav className="product-filter">
     <h1>Jackets</h1>
+      
+    {/* <button onClick={fetchAgian}>fetch again</button> */}
 
     <div className="sort">
       <div className="collection-sort">
@@ -41,6 +49,7 @@ const Header = ({ filterCategories, newpProductList }) => (
       </div>
     </div>
   </nav>
-);
+)
+};
 
 export default Header;
