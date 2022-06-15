@@ -1,5 +1,7 @@
 import "./Products.css";
 import Product from "../product/Product";
+
+
 const Products = ({ products }) => {
   return (
     <section className="products">
@@ -12,6 +14,7 @@ const Products = ({ products }) => {
             title={product.title}
             price={product.price}
           />
+
         )
       })}
     </section>

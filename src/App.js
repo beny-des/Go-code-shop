@@ -10,9 +10,6 @@ import { Routes, Route, Link } from "react-router-dom";
 import Home from "./components/pages/Home";
 import ProductDetails from "./components/pages/ProductDetails.js";
 
-
-
-
 function App() {
   const [productsArray, setProductsArray] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -21,6 +18,7 @@ function App() {
   const [cartItems, setCartItems] = useState([]);
   const [loadingSpinner, setLoadingSpinner] = useState(false);
   const [error, setError] = useState(false);
+
 
   const fetchProducts = () => {
     setLoadingSpinner(true);
@@ -32,10 +30,9 @@ function App() {
         setFilteredProducts(data);
         setCategories(uniqValues(data));
         setLoadingSpinner(false);
-      
       })
       .catch(function () {
-        return (setError(true), setLoadingSpinner(false))
+        return (setError(true), setLoadingSpinner(false));
       });
   };
 
@@ -71,39 +68,64 @@ function App() {
           x.id === id ? { ...exist, qty: exist.qty + 1 } : x
         )
       );
-      console.log(cartItems);
+     
     }
     // else, add to cart with qty = 1
     else {
       const newProduct = productsArray.find((x) => x.id === id);
+     
       setCartItems([...cartItems, { ...newProduct, qty: 1 }]);
+
     }
   };
 
-  // useEffect(() => console.log({loadingSpinner}), [loadingSpinner]);
+  
 
+  const onRemove = (id) => {
+    // ---filtering the shopping cart by product qty >0
+    console.log(id);
+    
+    const product = cartItems[cartItems.findIndex( p => p.id === id )]
+    console.log( product );
+    // --\
+    if (product.qty > 1) {
+      // setCartItems( { qty: reduceProductQty.qty - 1 });
+      setCartItems(cartItems.map((prod)=>prod.id===id?{...prod,qty: prod.qty - 1  }: prod))
 
- 
+    } else {
+      const removeProduct = cartItems.filter((product) => product.id !== id);
+      setCartItems(removeProduct);
+    }
+
+    console.log(cartItems);
+  };
+  useEffect(() => console.log(cartItems), [cartItems]);
 
   return (
     <div className="App">
       {/* <TuggleButton /> */}
-
-<Link to="/">Home</Link> <br/>
-<Link to="productDetails">ProductDetails</Link>
-
-
-      <CartContext.Provider value={{ counter, setCounter, onAdd, cartItems }}>
+      <Link to="/">Home</Link> <br />
+      <Link to="productDetails">ProductDetails</Link>
+      <CartContext.Provider
+        value={{
+          counter: counter,
+          setCounter: setCounter,
+          onAdd: onAdd,
+          cartItems: cartItems,
+          onRemove:onRemove,
+          
+        }}
+      >
         <Header
           filterCategories={categories}
           newpProductList={newpProductList}
           // fetchAgian={fetchProducts}
         />
-      <Routes>
-      <Route path="/" element={<Home />} />
-        <Route path="productDetails" element={<ProductDetails />} />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="productDetails" element={<ProductDetails />} />
+        </Routes>
 
-      </Routes>
         <ShoppingCart />
 
         {error && (
@@ -111,7 +133,7 @@ function App() {
             Server error
           </h1>
         )}
-        
+
         {loadingSpinner ? (
           <LoadingSpinner />
         ) : (
@@ -121,6 +143,5 @@ function App() {
     </div>
   );
 }
-
 
 export default App;

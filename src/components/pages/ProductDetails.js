@@ -1,9 +1,7 @@
 
 
 const ProductDetails=()=>{
-    return (
-        <div></div>
-    )
+    return <div></div>
 
 
 
