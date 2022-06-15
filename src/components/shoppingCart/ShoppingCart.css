@@ -1,0 +1,21 @@
+.shoppingCart{
+    height: 400px;
+    width: 100%;
+    display:flex;
+    /* border:solid; */
+}
+
+.cartHeadline{
+    justify-content: center
+    
+}
+.selectedProducts{
+    flex-wrap: wrap;
+    margin: 20px;
+    /* border: solid; */
+}
+
+.productInfo{
+    text-align: center;
+    width:100px;
+}

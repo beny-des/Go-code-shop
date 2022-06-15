@@ -1,10 +1,10 @@
-import "./Product.css"
+import "./Product.css";
 import CartContext from "../../context/CartContext";
 import { useContext } from "react";
 
 const Product = ({ image, title, price,id })=>
 {
-  const {addingToCart} =useContext(CartContext)
+  
   const {onAdd} =useContext(CartContext)
 
   return(
@@ -17,16 +17,9 @@ const Product = ({ image, title, price,id })=>
         
         <h5>{title}</h5>
         <h6>{price}</h6>
-        Add to cart: <button onClick={onAdd(id)}>+</button>
-        
-              
-        
-      
-        
+        Add to cart: <button onClick={()=>{onAdd(id)}}>+</button>
 
-        
-    
       </div>
     </div>
-  )};
-  export default Product;
+  )}
+  export default Product

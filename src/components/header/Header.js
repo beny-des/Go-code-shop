@@ -46,6 +46,8 @@ const Header = ({ filterCategories, newpProductList, fetchAgian }) => {
           <option value="/">Date, new to old</option>
           <option value="/">Date, old to new</option>
         </select>
+
+        
       </div>
     </div>
   </nav>

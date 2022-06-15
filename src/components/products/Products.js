@@ -12,9 +12,9 @@ const Products = ({ products }) => {
             title={product.title}
             price={product.price}
           />
-        );
+        )
       })}
     </section>
   );
 };
-export default Products;
+export default Products
