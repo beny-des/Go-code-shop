@@ -1,0 +1,15 @@
+
+.productDetails-card{
+    /* width: 100%;  */
+      display: flex;
+   justify-content: center;
+    /* flex-direction: column; */
+   
+}
+
+
+/* .productDetails-image {} */
+ 
+.img-detalis{
+    width:500px;
+}

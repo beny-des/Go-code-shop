@@ -1,63 +1,15 @@
-import { useEffect, useState } from "react";
 import "./App.css";
-import Header from "./components/header/Header";
-import Products from "./components/products/Products";
-import LoadingSpinner from "./components/loadingSpinner/LoadingSpinner";
-import CartContext from "./context/CartContext";
-import ShoppingCart from "./components/shoppingCart/ShoppingCart";
-import TuggleButton from "./components/classWork/TuggleButton";
-import { Routes, Route, Link } from "react-router-dom";
 import Home from "./components/pages/Home";
 import ProductDetails from "./components/pages/ProductDetails.js";
+import AppContext from "./context/AppContext";
+import { Routes, Route } from "react-router-dom";
+import { useState } from "react";
 
 function App() {
   const [productsArray, setProductsArray] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [counter, setCounter] = useState([]);
   const [cartItems, setCartItems] = useState([]);
-  const [loadingSpinner, setLoadingSpinner] = useState(false);
-  const [error, setError] = useState(false);
 
-
-  const fetchProducts = () => {
-    setLoadingSpinner(true);
-    setError(false);
-    fetch("https://fakestoreapi.com/products")
-      .then((result) => result.json())
-      .then((data) => {
-        setProductsArray(data);
-        setFilteredProducts(data);
-        setCategories(uniqValues(data));
-        setLoadingSpinner(false);
-      })
-      .catch(function () {
-        return (setError(true), setLoadingSpinner(false));
-      });
-  };
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  // -------search the array for category and giving us one of each for the dropdown filter
-  function uniqValues(array) {
-    return array
-      .map((p) => p.category)
-      .filter((value, index, array) => array.indexOf(value) === index);
-  }
-
-  // -----function for filtering & show the products array based on the category the user picked
-  function newpProductList(filteredList) {
-    const fillterCategory =
-      filteredList === "All"
-        ? productsArray
-        : productsArray.filter(
-            (productObj) => productObj.category === filteredList
-          );
-    setFilteredProducts(fillterCategory);
-  }
-
+  // -----add poroduct to cart
   const onAdd = (id) => {
     // check if product in cart
     const exist = cartItems.find((x) => x.id === id);
@@ -68,78 +20,51 @@ function App() {
           x.id === id ? { ...exist, qty: exist.qty + 1 } : x
         )
       );
-     
     }
     // else, add to cart with qty = 1
     else {
       const newProduct = productsArray.find((x) => x.id === id);
-     
-      setCartItems([...cartItems, { ...newProduct, qty: 1 }]);
 
+      setCartItems([...cartItems, { ...newProduct, qty: 1 }]);
     }
   };
 
-  
-
+  //----- remove poroduct from cart
   const onRemove = (id) => {
     // ---filtering the shopping cart by product qty >0
-    console.log(id);
-    
-    const product = cartItems[cartItems.findIndex( p => p.id === id )]
-    console.log( product );
-    // --\
+    const product = cartItems[cartItems.findIndex((p) => p.id === id)];
+    // --if qty>1 then find the id in the cart array..if (true) give me the object (prod) and change
+    //  his qty value if (false) leave the object as it is
     if (product.qty > 1) {
-      // setCartItems( { qty: reduceProductQty.qty - 1 });
-      setCartItems(cartItems.map((prod)=>prod.id===id?{...prod,qty: prod.qty - 1  }: prod))
-
+      setCartItems(
+        cartItems.map((prod) =>
+          prod.id === id ? { ...prod, qty: prod.qty - 1 } : prod
+        )
+      );
+      // else give me all the objects (product) that have diffrent id
     } else {
       const removeProduct = cartItems.filter((product) => product.id !== id);
       setCartItems(removeProduct);
     }
-
-    console.log(cartItems);
   };
-  useEffect(() => console.log(cartItems), [cartItems]);
 
   return (
     <div className="App">
-      {/* <TuggleButton /> */}
-      <Link to="/">Home</Link> <br />
-      <Link to="productDetails">ProductDetails</Link>
-      <CartContext.Provider
+      <AppContext.Provider
         value={{
-          counter: counter,
-          setCounter: setCounter,
-          onAdd: onAdd,
           cartItems: cartItems,
-          onRemove:onRemove,
-          
+          setCartItems: setCartItems,
+          onAdd: onAdd,
+          onRemove: onRemove,
+          productsArray: productsArray,
+          setProductsArray: setProductsArray,
         }}
       >
-        <Header
-          filterCategories={categories}
-          newpProductList={newpProductList}
-          // fetchAgian={fetchProducts}
-        />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="productDetails" element={<ProductDetails />} />
+          <Route path="/products/:productId" element={<ProductDetails />} />
         </Routes>
-
-        <ShoppingCart />
-
-        {error && (
-          <h1 style={{ textAlign: "center", fontSize: "90px" }}>
-            Server error
-          </h1>
-        )}
-
-        {loadingSpinner ? (
-          <LoadingSpinner />
-        ) : (
-          <Products products={filteredProducts} />
-        )}
-      </CartContext.Provider>
+      </AppContext.Provider>
     </div>
   );
 }

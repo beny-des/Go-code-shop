@@ -1,11 +1,10 @@
 import "./Header.css";
-// import CartContext from "../../context/CartContext";
-// import { useContext } from "react";
+import RangeSlider from "../rangeSlider/RangeSlider";    
+
 
 const Header = ({ filterCategories, newpProductList, fetchAgian }) => {
-  // const categories = useContext(CartContext)
-  
-  
+ 
+
   return (
   <nav className="product-filter">
     <h1>Jackets</h1>
@@ -47,7 +46,10 @@ const Header = ({ filterCategories, newpProductList, fetchAgian }) => {
           <option value="/">Date, old to new</option>
         </select>
 
-        
+        <RangeSlider />
+
+    
+
       </div>
     </div>
   </nav>
