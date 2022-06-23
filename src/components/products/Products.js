@@ -1,7 +1,6 @@
 import "./Products.css";
 import Product from "../product/Product";
 
-
 const Products = ({ products }) => {
   return (
     <section className="products">
@@ -13,11 +12,11 @@ const Products = ({ products }) => {
             image={product.image}
             title={product.title}
             price={product.price}
+            qty={product.qty === 0}
           />
-
-        )
+        );
       })}
     </section>
   );
 };
-export default Products
+export default Products;

@@ -5,7 +5,7 @@ import "../shoppingCart/ShoppingCart.css";
 
 const ShoppingCart=()=>{
 
-    const {cartItems,onRemove}=useContext(AppContext);
+    const {cartItems,onRemove,onAdd}=useContext(AppContext);
  
 
     return(
@@ -23,8 +23,11 @@ const ShoppingCart=()=>{
                         <div className="productInfo" > 
               <h5> {product.title}</h5>
               <h6>Price:{product.price}$</h6>
-              <h6>qty: {product.qty}</h6>
-              remove: <button onClick={()=>{onRemove(product.id)}}>-</button>
+              <div style={{display:"flex",flexWrap:"nowrap",justifyContent:"center",alignItems: 'center', gap: '10px',margin:"5px" }}>
+                <button onClick={()=>{onRemove(product.id)}}>-</button>
+                <h6>{product.qty}</h6>
+                <button onClick={() => {onAdd(product.id); }}>+</button>
+              </div>
 
 
             </div>

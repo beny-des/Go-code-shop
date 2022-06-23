@@ -1,31 +1,28 @@
 import Slider from "@mui/material/Slider";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import CartContext from "../../context/CartContext";
 // import * as React from 'react';
 
-
 const RangeSlider = () => {
-  const { priceValue, setPriceValue, sliderPriceFilter } =
+  const { priceValue, val, setVal, sliderPriceFilter } =
     useContext(CartContext);
 
-
-
   // --slider onChange
-  const handleChange = (event, newValue) => {
-    
-    setPriceValue(newValue);
-    // sliderPriceFilter(newValue);
+  const handleChange = (newValue) => {
+    setVal(newValue);
+    // sliderPriceFilter(newValue)
   };
 
   return (
     <Slider
-      // getAriaLabel={() => 'Temperature range'}
-      value={priceValue}
-      min={ [priceValue[0]]}
-      max={[priceValue[priceValue.length - 1]]}
-      onChange={handleChange}
-      valueLabelDisplay="on"
-      // getAriaValueText={valuetext}
+      value={val}
+      min={priceValue[0]}
+      max={priceValue[1]}
+      onChange={(e, value) => {
+        sliderPriceFilter(value);
+        handleChange(value);
+      }}
+      valueLabelDisplay="auto"
     />
   );
 };

@@ -48,6 +48,18 @@ function App() {
     }
   };
 
+  const qtyCheck = (id) => {
+    const productQty = cartItems.find((product) => product.id === id);
+    console.log(productQty);
+
+    if (productQty) {
+      // console.log("productQty", productQty.qty);
+      return productQty.qty;
+    } else {
+      return 0;
+    }
+  };
+
   return (
     <div className="App">
       <AppContext.Provider
@@ -58,6 +70,7 @@ function App() {
           onRemove: onRemove,
           productsArray: productsArray,
           setProductsArray: setProductsArray,
+          qtyCheck: qtyCheck,
         }}
       >
         <Routes>

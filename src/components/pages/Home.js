@@ -12,8 +12,9 @@ const Home = () => {
   const [categories, setCategories] = useState([]);
   const [loadingSpinner, setLoadingSpinner] = useState(false);
   const [error, setError] = useState(false);
-  const [priceValue,setPriceValue]=useState([]);
-  const [priceFiltered,setPriceFiltered]=useState([]);
+  const [priceValue, setPriceValue] = useState([1, 1000]);
+  const [val, setVal] = useState([priceValue[0], priceValue[1]]);
+  const [priceFiltered, setPriceFiltered] = useState([]);
 
   const { productsArray, setProductsArray } = useContext(AppContext);
 
@@ -29,15 +30,12 @@ const Home = () => {
         setLoadingSpinner(false);
         minMaxPrices(data);
         setPriceFiltered(data);
-        // sliderPriceFilter();
       })
       .catch(function () {
         setError(true);
         setLoadingSpinner(false);
       });
   }, [setProductsArray]);
-
-
 
   // -------search the array for category and giving us one of each for the dropdown filter
   function uniqValues(array) {
@@ -55,14 +53,13 @@ const Home = () => {
             (productObj) => productObj.category === filteredList
           );
     setFilteredProducts(fillterCategory);
-    setPriceFiltered(fillterCategory)
-
+    setPriceFiltered(fillterCategory);
   }
 
-
-//  -- sort products by price
+  //  -- sort products by price
   function minMaxPrices(data) {
-    const sliderPrices = data.map((product) => product.price)
+    const sliderPrices = data
+      .map((product) => product.price)
       .sort((a, b) => {
         if (a < b) {
           return -1;
@@ -72,38 +69,37 @@ const Home = () => {
         }
         return 0;
       });
-      setPriceValue([sliderPrices[0],sliderPrices[sliderPrices.length-1]]);
-    } 
-    // useEffect( () => console.log(priceValue),[priceValue] )
-
-
+    setPriceValue([sliderPrices[0], sliderPrices[sliderPrices.length - 1]]);
+  }
 
   // --filtering & show products array based on slider
 
-  // function sliderPriceFilter(priceValue){
-  //   let filteredPrice= priceFiltered.filter((productObj)=>productObj.price > priceValue[0] && productObj.price < priceValue[priceValue.length-1]
-  //   ? setPriceFiltered(filteredPrice)  :  <div>No products have been found</div>)} 
-      // console.log(priceFiltered);
-          // if(filteredPrice > priceValue[0] && filteredPrice < priceValue[priceValue.length-1]){} else{}
+  function sliderPriceFilter(priceValue) {
+    console.log(priceValue);
+    const filteredPrice = priceFiltered.filter(
+      (productObj) =>
+        productObj.price >= priceValue[0] && productObj.price <= priceValue[1]
+    );
 
-  
-  // useEffect( () => sliderPriceFilter(priceValue),[priceValue] )
- 
-
-    
-    
-    
-
+    setFilteredProducts(filteredPrice);
+  }
 
   return (
     <div>
       {/* <TuggleButton /> */}
-      <CartContext.Provider value={{priceValue:priceValue,setPriceValue:setPriceValue,
-        // sliderPriceFilter:sliderPriceFilter
-        }}>
+      <CartContext.Provider
+        value={{
+          priceValue: priceValue,
+          setPriceValue: setPriceValue,
+          val: val,
+          setVal: setVal,
+          sliderPriceFilter: sliderPriceFilter,
+        }}
+      >
         <Header
           filterCategories={categories}
           newpProductList={newpProductList}
+
           // fetchAgian={fetchProducts}
         />
         <ShoppingCart />
